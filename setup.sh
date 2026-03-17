@@ -40,8 +40,8 @@ else
         exit 1
     fi
     echo -e "${GREEN}  Cloning repository...${NC}"
-    sudo mkdir -p "$APP_DIR"
-    sudo chown "$USER":"$USER" "$APP_DIR"
+    mkdir -p "$APP_DIR"
+    chown "$USER":"$USER" "$APP_DIR"
     git clone -b "$GIT_BRANCH" "$GIT_REPO" "$APP_DIR"
     cd "$APP_DIR"
 fi
@@ -138,11 +138,11 @@ fi
 # -------------------------------------------
 echo ""
 echo -e "${YELLOW}[8/10] Setting permissions ($PLESK_USER:$PLESK_GROUP)...${NC}"
-sudo chown -R "$PLESK_USER":"$PLESK_GROUP" .
-sudo find . -type f -exec chmod 644 {} \;
-sudo find . -type d -exec chmod 755 {} \;
-sudo chmod -R 775 storage
-sudo chmod -R 775 bootstrap/cache
+chown -R "$PLESK_USER":"$PLESK_GROUP" .
+find . -type f -exec chmod 644 {} \;
+find . -type d -exec chmod 755 {} \;
+chmod -R 775 storage
+chmod -R 775 bootstrap/cache
 
 # -------------------------------------------
 # Cache optimization
@@ -161,12 +161,12 @@ echo ""
 echo -e "${YELLOW}[10/10] Checking Laravel scheduler cron job...${NC}"
 
 CRON_JOB="* * * * * cd $APP_DIR && php artisan schedule:run >> /dev/null 2>&1"
-CRON_EXISTS=$(sudo crontab -u "$PLESK_USER" -l 2>/dev/null | grep -F "php artisan schedule:run" | wc -l)
+CRON_EXISTS=$(crontab -u "$PLESK_USER" -l 2>/dev/null | grep -F "php artisan schedule:run" | wc -l)
 
 if [ "$CRON_EXISTS" -gt 0 ]; then
     echo -e "${GREEN}  Laravel cron job already configured.${NC}"
 else
-    (sudo crontab -u "$PLESK_USER" -l 2>/dev/null; echo "$CRON_JOB") | sudo crontab -u "$PLESK_USER" -
+    (crontab -u "$PLESK_USER" -l 2>/dev/null; echo "$CRON_JOB") | crontab -u "$PLESK_USER" -
     echo -e "${GREEN}  Laravel cron job added for $PLESK_USER.${NC}"
 fi
 

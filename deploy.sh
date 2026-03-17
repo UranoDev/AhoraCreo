@@ -85,9 +85,9 @@ fi
 # -------------------------------------------
 echo ""
 echo -e "${YELLOW}[6/7] Setting permissions ($PLESK_USER:$PLESK_GROUP)...${NC}"
-sudo chown -R "$PLESK_USER":"$PLESK_GROUP" .
-sudo chmod -R 775 storage
-sudo chmod -R 775 bootstrap/cache
+chown -R "$PLESK_USER":"$PLESK_GROUP" .
+chmod -R 775 storage
+chmod -R 775 bootstrap/cache
 
 # -------------------------------------------
 # Cache optimization
