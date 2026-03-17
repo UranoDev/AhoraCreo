@@ -5,8 +5,8 @@ set -e
 # CONFIGURATION - Change these values
 # ===========================================
 DOMAIN="ahoracreo.com"
-GIT_REPO="https://tu-repositorio.git"
-GIT_BRANCH="main"
+GIT_REPO="https://github.com/UranoDev/AhoraCreo.git"
+GIT_BRANCH="master"
 
 # Derived paths (Plesk standard)
 VHOST_DIR="/var/www/vhosts/$DOMAIN"
@@ -29,8 +29,9 @@ echo -e "${GREEN}========================================${NC}"
 # -------------------------------------------
 echo ""
 echo -e "${YELLOW}[1/10] Setting up repository...${NC}"
+echo -e "Looking for $APP_DIR/.git"
 if [ -d "$APP_DIR/.git" ]; then
-    echo -e "${GREEN}  Repository already exists. Pulling latest changes...${NC}"
+    echo -e "${GREEN}  Repository $APP_DIR/.git already exists. Pulling latest changes...${NC}"
     cd "$APP_DIR"
     git pull origin "$GIT_BRANCH"
 else
@@ -40,8 +41,8 @@ else
         exit 1
     fi
     echo -e "${GREEN}  Cloning repository...${NC}"
-    mkdir -p "$APP_DIR"
-    chown "$USER":"$USER" "$APP_DIR"
+#    mkdir -p "$APP_DIR"
+#    chown "$PLESK_USER":"$PLESK_GROUP" "$APP_DIR"
     git clone -b "$GIT_BRANCH" "$GIT_REPO" "$APP_DIR"
     cd "$APP_DIR"
 fi
