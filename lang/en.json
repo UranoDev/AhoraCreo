@@ -37,7 +37,7 @@
     "This email has already been verified. Check your inbox for the book.": "This email has already been verified. Check your inbox for the book.",
     "Invalid or expired verification link.": "Invalid or expired verification link.",
     "Invalid download link.": "Invalid download link.",
-    "The book file is not available at this time.": "The book file is not available at this time.",
+    "The book file \":filename\" is not available at this time.": "The book file \":filename\" is not available at this time.",
     "Email Verified Successfully!": "Email Verified Successfully!",
     "Your book is on its way! Check your inbox for an email with the PDF attached and a download link.": "Your book is on its way! Check your inbox for an email with the PDF attached and a download link.",
     "← Back to Home": "← Back to Home",

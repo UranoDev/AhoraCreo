@@ -37,7 +37,7 @@
     "This email has already been verified. Check your inbox for the book.": "Este email ya fue verificado. Revisa tu bandeja de entrada para encontrar el libro.",
     "Invalid or expired verification link.": "Enlace de verificación inválido o expirado.",
     "Invalid download link.": "Enlace de descarga inválido.",
-    "The book file is not available at this time.": "El archivo del libro no está disponible en este momento.",
+    "The book file \":filename\" is not available at this time.": "El archivo del libro \":filename\" no está disponible en este momento.",
     "Email Verified Successfully!": "¡Email Verificado Exitosamente!",
     "Your book is on its way! Check your inbox for an email with the PDF attached and a download link.": "¡Tu libro está en camino! Revisa tu bandeja de entrada para encontrar un email con el PDF adjunto y un enlace de descarga.",
     "← Back to Home": "← Volver al Inicio",

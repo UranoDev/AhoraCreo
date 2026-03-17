@@ -5,11 +5,12 @@ set -e
 # CONFIGURATION - Change these values
 # ===========================================
 DOMAIN="ahoracreo.com"
-GIT_BRANCH="main"
+GIT_BRANCH="master"
 
 # Derived paths (Plesk standard)
 VHOST_DIR="/var/www/vhosts/$DOMAIN"
 APP_DIR="$VHOST_DIR/httpdocs"
+ENV_BACKUP_DIR="$VHOST_DIR/env-backups"
 PLESK_USER=$(stat -c '%U' "$VHOST_DIR" 2>/dev/null || echo "www-data")
 PLESK_GROUP="psacln"
 
@@ -26,36 +27,90 @@ echo -e "${GREEN}========================================${NC}"
 cd "$APP_DIR"
 
 # -------------------------------------------
+# Backup .env before deploy
+# -------------------------------------------
+echo ""
+echo -e "${YELLOW}[1/9] Backing up .env...${NC}"
+mkdir -p "$ENV_BACKUP_DIR"
+if [ -f .env ]; then
+    BACKUP_NAME=".env.$(date +%Y%m%d_%H%M%S)"
+    cp .env "$ENV_BACKUP_DIR/$BACKUP_NAME"
+    echo -e "${GREEN}  Backup saved: $ENV_BACKUP_DIR/$BACKUP_NAME${NC}"
+
+    # Keep only last 10 backups
+    ls -t "$ENV_BACKUP_DIR"/.env.* 2>/dev/null | tail -n +11 | xargs -r rm
+    BACKUP_COUNT=$(ls "$ENV_BACKUP_DIR"/.env.* 2>/dev/null | wc -l)
+    echo -e "${GREEN}  Total backups: $BACKUP_COUNT (max 10)${NC}"
+else
+    echo -e "${RED}  No .env found to backup.${NC}"
+fi
+
+# -------------------------------------------
 # Pull latest changes
 # -------------------------------------------
 echo ""
-echo -e "${YELLOW}[1/7] Pulling latest changes...${NC}"
+echo -e "${YELLOW}[2/9] Pulling latest changes...${NC}"
+git stash --quiet 2>/dev/null || true
 git pull origin "$GIT_BRANCH"
+git stash pop --quiet 2>/dev/null || true
 
 # -------------------------------------------
-# Install dependencies
+# Check for new .env variables
 # -------------------------------------------
 echo ""
-echo -e "${YELLOW}[2/7] Installing PHP dependencies...${NC}"
-composer install --optimize-autoloader --no-dev
+echo -e "${YELLOW}[3/9] Checking for new .env variables...${NC}"
+if [ -f .env ] && [ -f .env.example ]; then
+    MISSING_VARS=""
+    while IFS= read -r line; do
+        if [[ "$line" =~ ^[A-Z_]+= ]]; then
+            VAR_NAME=$(echo "$line" | cut -d '=' -f1)
+            if ! grep -q "^$VAR_NAME=" .env; then
+                MISSING_VARS="$MISSING_VARS\n    - $VAR_NAME"
+            fi
+        fi
+    done < .env.example
+
+    if [ -n "$MISSING_VARS" ]; then
+        echo -e "${YELLOW}  New variables found in .env.example not in .env:${NC}"
+        echo -e "${YELLOW}$MISSING_VARS${NC}"
+        echo -e "${YELLOW}  Add them to .env: nano $APP_DIR/.env${NC}"
+    else
+        echo -e "${GREEN}  All variables are in sync.${NC}"
+    fi
+else
+    echo -e "${YELLOW}  Skipped (.env or .env.example missing).${NC}"
+fi
+
+# -------------------------------------------
+# Install dependencies and build assets
+# -------------------------------------------
+echo ""
+echo -e "${YELLOW}[4/9] Installing PHP dependencies...${NC}"
+composer install --optimize-autoloader
 
 echo ""
-echo -e "${YELLOW}[3/7] Building frontend assets...${NC}"
+echo -e "${YELLOW}[5/9] Building frontend assets...${NC}"
 npm install
 npm run build
 
 # -------------------------------------------
-# Run migrations
+# Run migrations and seed
 # -------------------------------------------
 echo ""
-echo -e "${YELLOW}[4/7] Running migrations...${NC}"
+echo -e "${YELLOW}[6/9] Running migrations...${NC}"
 php artisan migrate --force
+php artisan db:seed --force
+
+# Remove dev dependencies
+echo ""
+echo -e "${YELLOW}[7/9] Removing dev dependencies...${NC}"
+composer install --optimize-autoloader --no-dev
 
 # -------------------------------------------
 # Validate PDF book file
 # -------------------------------------------
 echo ""
-echo -e "${YELLOW}[5/7] Checking PDF book file...${NC}"
+echo -e "${YELLOW}[8/9] Checking PDF book file...${NC}"
 
 BOOK_DIR=$(grep "^BOOK_PDF_DIRECTORY=" .env | cut -d '=' -f2- | tr -d '"')
 BOOK_FILE=$(grep "^BOOK_PDF_FILENAME=" .env | cut -d '=' -f2- | tr -d '"')
@@ -78,32 +133,3 @@ else
     else
         echo -e "${RED}  No PDFs found. Upload to: $APP_DIR/$BOOK_PATH${NC}"
     fi
-fi
-
-# -------------------------------------------
-# Set permissions
-# -------------------------------------------
-echo ""
-echo -e "${YELLOW}[6/7] Setting permissions ($PLESK_USER:$PLESK_GROUP)...${NC}"
-chown -R "$PLESK_USER":"$PLESK_GROUP" .
-chmod -R 775 storage
-chmod -R 775 bootstrap/cache
-
-# -------------------------------------------
-# Cache optimization
-# -------------------------------------------
-echo ""
-echo -e "${YELLOW}[7/7] Rebuilding cache...${NC}"
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
-php artisan event:cache
-
-# -------------------------------------------
-# Done
-# -------------------------------------------
-echo ""
-echo -e "${GREEN}========================================${NC}"
-echo -e "${GREEN}  Deployment Complete! ($DOMAIN)       ${NC}"
-echo -e "${GREEN}========================================${NC}"
-echo ""

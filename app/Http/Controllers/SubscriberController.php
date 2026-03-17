@@ -31,7 +31,6 @@ class SubscriberController extends Controller
                 return back()->with('info', __('This email has already been verified. Check your inbox for the book.'));
             }
 
-            // Resend verification email
             $token = Subscriber::generateVerificationToken();
             $existing->update(['verification_token' => $token]);
             Mail::to($existing->email)->send(new VerifySubscriberEmail($existing));
@@ -60,7 +59,6 @@ class SubscriberController extends Controller
 
         $subscriber->markAsVerified();
 
-        // Send the PDF email
         Mail::to($subscriber->email)->send(new SendBookPdf($subscriber));
         $subscriber->markAsPdfSent();
 
@@ -77,14 +75,15 @@ class SubscriberController extends Controller
         }
 
         $pdfPath = SendBookPdf::getPdfPath();
+        $pdfFilename = config('book.pdf_filename');
 
         if (!file_exists($pdfPath)) {
             return redirect()->route('landing')
-                ->with('error', __('The book file is not available at this time.'));
+                ->with('error', __('The book file ":filename" is not available at this time.', ['filename' => $pdfPath. " - " . $pdfFilename]));
         }
 
         $subscriber->markAsPdfDownloaded();
 
-        return response()->download($pdfPath, config('book.pdf_filename'));
+        return response()->download($pdfPath, $pdfFilename);
     }
 }

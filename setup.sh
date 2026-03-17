@@ -80,6 +80,7 @@ composer install --optimize-autoloader --no-dev
 echo ""
 echo -e "${YELLOW}[4/10] Building frontend assets...${NC}"
 npm install
+chmod +x node_modules/.bin/*
 npm run build
 
 # -------------------------------------------
@@ -100,8 +101,15 @@ fi
 # -------------------------------------------
 echo ""
 echo -e "${YELLOW}[6/10] Running migrations and seeders...${NC}"
+
+# Install dev dependencies temporarily (Faker is needed for seeders)
+composer install --optimize-autoloader
+
 php artisan migrate --force
 php artisan db:seed --force
+
+# Remove dev dependencies
+composer install --optimize-autoloader --no-dev
 
 # -------------------------------------------
 # Validate PDF book file
