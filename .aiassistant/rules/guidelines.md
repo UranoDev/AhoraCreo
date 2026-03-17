@@ -10,3 +10,7 @@ Usar PHP 8.4
 
 # Sistema Operativo
 Todos los comandos deben ser para PowerShell
+
+
+# Git
+Siempre usa Brahck = master
