@@ -1,5 +1,10 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
+    <div class="mb-6">
+        <p class="serif italic text-sm text-[#B8860B] mb-2">{{ __('Confirmacion requerida') }}</p>
+        <h1 class="serif text-3xl font-bold text-gray-900 mb-4">{{ __('Confirma tu contrasena') }}</h1>
+    </div>
+
+    <div class="mb-4 text-sm text-gray-600 leading-relaxed">
         {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
     </div>
 

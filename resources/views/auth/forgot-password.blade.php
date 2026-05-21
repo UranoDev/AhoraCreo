@@ -1,5 +1,10 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
+    <div class="mb-6">
+        <p class="serif italic text-sm text-[#B8860B] mb-2">{{ __('Recuperar acceso') }}</p>
+        <h1 class="serif text-3xl font-bold text-gray-900 mb-4">{{ __('Restablecer contrasena') }}</h1>
+    </div>
+
+    <div class="mb-4 text-sm text-gray-600 leading-relaxed">
         {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
     </div>
 

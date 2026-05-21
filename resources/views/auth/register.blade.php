@@ -1,4 +1,9 @@
 <x-guest-layout>
+    <div class="mb-6">
+        <p class="serif italic text-sm text-[#B8860B] mb-2">{{ __('Crear acceso') }}</p>
+        <h1 class="serif text-3xl font-bold text-gray-900">{{ __('Registro') }}</h1>
+    </div>
+
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
@@ -40,7 +45,7 @@
         </div>
 
         <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
+            <a class="underline text-sm text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#B8860B]/30" href="{{ route('login') }}">
                 {{ __('Already registered?') }}
             </a>
 

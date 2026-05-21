@@ -1,25 +1,57 @@
-*.log
-.DS_Store
-.env
-.env.backup
-.env.production
-.phpactor.json
-.phpunit.result.cache
-/.fleet
-/.idea
-/.nova
-/.phpunit.cache
-/.vscode
-/.zed
-/auth.json
+# -----------------------------------------------------------------------------
+# Laravel-specific files and dependencies
+# -----------------------------------------------------------------------------
 /node_modules
+/vendor
 /public/build
 /public/hot
 /public/storage
 /storage/*.key
-/storage/pail
-/vendor
-Homestead.json
+/storage
+
+/.aiassistant
+/docs
+
+*secret*
+
+# -----------------------------------------------------------------------------
+# Configuration and Environments (CRITICAL FOR SECURITY!)
+# -----------------------------------------------------------------------------
+.env
+.env.backup
+.env.production
+homestead.json
 Homestead.yaml
+
+# -----------------------------------------------------------------------------
+# Test cache and development tools
+# -----------------------------------------------------------------------------
+.phpunit.result.cache
+.phpunit.cache/
+.php_cs.cache
+.php-cs-fixer.cache
+npm-debug.log
+yarn-error.log
+
+# -----------------------------------------------------------------------------
+# Development environments / Common IDEs
+# -----------------------------------------------------------------------------
+/.idea
+/.vscode
+/.space
+
+# -----------------------------------------------------------------------------
+# Operating system junk files
+# -----------------------------------------------------------------------------
+.DS_Store
 Thumbs.db
-client_secret*
+ehthumbs.db
+Desktop.ini
+
+# -----------------------------------------------------------------------------
+# Containers / Laravel Sail (Optional - local overrides)
+# -----------------------------------------------------------------------------
+docker-compose.override.yml
+
+# My Documentation
+*.ps1

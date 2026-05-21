@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 // Landing Page (public)
 Route::get('/', [SubscriberController::class, 'landing'])->name('landing');
+Route::get('/ebook-cover', [SubscriberController::class, 'cover'])->name('ebook.cover');
 Route::post('/subscribe', [SubscriberController::class, 'subscribe'])->name('subscribe');
 
 // Email Verification & Download (public)

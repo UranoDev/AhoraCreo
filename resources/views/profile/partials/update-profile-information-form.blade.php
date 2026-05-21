@@ -1,7 +1,7 @@
 <section>
     <header>
-        <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Profile Information') }}
+        <h2 class="serif text-xl font-semibold text-gray-900">
+            {{ __('Informacion del perfil') }}
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
@@ -33,13 +33,13 @@
                     <p class="text-sm mt-2 text-gray-800">
                         {{ __('Your email address is unverified.') }}
 
-                        <button form="send-verification" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <button form="send-verification" class="underline text-sm text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#B8860B]/30">
                             {{ __('Click here to re-send the verification email.') }}
                         </button>
                     </p>
 
                     @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-600">
+                        <p class="mt-2 p-3 bg-green-50 border border-green-200 rounded-sm text-green-700 text-sm italic serif">
                             {{ __('A new verification link has been sent to your email address.') }}
                         </p>
                     @endif

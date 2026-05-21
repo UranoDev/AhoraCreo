@@ -1,33 +1,34 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ __('Email Verified') }}</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="bg-gradient-to-br from-green-800 via-emerald-900 to-teal-900 min-h-screen flex items-center justify-center">
+@extends('layouts.ebook-landing')
 
-<div class="max-w-lg mx-auto px-6 py-12 text-center">
-    <div class="inline-flex items-center justify-center w-20 h-20 bg-green-400/20 rounded-full mb-6">
-        <svg class="w-10 h-10 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-        </svg>
-    </div>
+@section('title', __('Correo verificado'))
 
-    <h1 class="text-3xl font-bold text-white mb-4">
-        {{ __('Email Verified Successfully!') }}
-    </h1>
+@section('content')
+    <section class="max-w-2xl mx-auto text-center">
+        <div class="bg-white border border-gray-100 shadow-sm px-6 py-10 md:px-10 md:py-12 rounded-sm">
+            <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-sm border border-green-200 bg-green-50">
+                <svg class="h-8 w-8 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+            </div>
 
-    <p class="text-emerald-200 mb-6">
-        {{ __('Your book is on its way! Check your inbox for an email with the PDF attached and a download link.') }}
-    </p>
+            <p class="serif italic text-[#B8860B] mb-3">
+                {{ __('Verificacion completada') }}
+            </p>
 
-    <a href="{{ route('landing') }}"
-       class="inline-block py-3 px-8 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-xl transition">
-        {{ __('← Back to Home') }}
-    </a>
-</div>
+            <h1 class="serif text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-5">
+                {{ __('Tu libro esta en camino') }}
+            </h1>
 
-</body>
-</html>
+            <p class="text-gray-600 leading-relaxed mb-8">
+                {{ __('Revisa tu bandeja de entrada. Te enviamos un correo con el PDF adjunto y un enlace de descarga.') }}
+            </p>
+
+            <a
+                href="{{ route('landing') }}"
+                class="inline-flex items-center justify-center py-4 px-6 btn-gold font-semibold rounded-sm transition duration-300 uppercase tracking-widest text-xs"
+            >
+                {{ __('Volver al inicio') }}
+            </a>
+        </div>
+    </section>
+@endsection

@@ -18,6 +18,15 @@ class SubscriberController extends Controller
         return view('landing');
     }
 
+    public function cover(): BinaryFileResponse
+    {
+        $coverPath = storage_path('ebooks/portada.jpeg');
+
+        abort_unless(file_exists($coverPath), 404);
+
+        return response()->file($coverPath, ['Content-Type' => 'image/jpeg']);
+    }
+
     public function subscribe(Request $request): RedirectResponse
     {
         $validated = $request->validate([

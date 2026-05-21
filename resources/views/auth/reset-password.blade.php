@@ -1,4 +1,9 @@
 <x-guest-layout>
+    <div class="mb-6">
+        <p class="serif italic text-sm text-[#B8860B] mb-2">{{ __('Nuevo acceso') }}</p>
+        <h1 class="serif text-3xl font-bold text-gray-900">{{ __('Crea una nueva contrasena') }}</h1>
+    </div>
+
     <form method="POST" action="{{ route('password.store') }}">
         @csrf
 

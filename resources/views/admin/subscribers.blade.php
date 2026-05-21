@@ -1,8 +1,8 @@
 
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Subscriber Management') }}
+        <h2 class="serif font-semibold text-2xl text-gray-900 leading-tight">
+            {{ __('Gestion de suscriptores') }}
         </h2>
     </x-slot>
 
@@ -11,30 +11,30 @@
 
             {{-- Stats Cards --}}
             <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-                <div class="bg-white rounded-xl shadow p-4 text-center">
+                <div class="bg-white rounded-sm border border-gray-100 shadow-sm p-4 text-center">
                     <p class="text-2xl font-bold text-gray-800">{{ $stats['total'] }}</p>
                     <p class="text-sm text-gray-500">{{ __('Total') }}</p>
                 </div>
-                <div class="bg-white rounded-xl shadow p-4 text-center">
+                <div class="bg-white rounded-sm border border-gray-100 shadow-sm p-4 text-center">
                     <p class="text-2xl font-bold text-green-600">{{ $stats['verified'] }}</p>
                     <p class="text-sm text-gray-500">{{ __('Verified') }}</p>
                 </div>
-                <div class="bg-white rounded-xl shadow p-4 text-center">
+                <div class="bg-white rounded-sm border border-gray-100 shadow-sm p-4 text-center">
                     <p class="text-2xl font-bold text-blue-600">{{ $stats['pdf_sent'] }}</p>
                     <p class="text-sm text-gray-500">{{ __('PDF Sent') }}</p>
                 </div>
-                <div class="bg-white rounded-xl shadow p-4 text-center">
+                <div class="bg-white rounded-sm border border-gray-100 shadow-sm p-4 text-center">
                     <p class="text-2xl font-bold text-purple-600">{{ $stats['downloaded'] }}</p>
                     <p class="text-sm text-gray-500">{{ __('Downloaded') }}</p>
                 </div>
-                <div class="bg-white rounded-xl shadow p-4 text-center">
+                <div class="bg-white rounded-sm border border-gray-100 shadow-sm p-4 text-center">
                     <p class="text-2xl font-bold text-yellow-600">{{ $stats['pending'] }}</p>
                     <p class="text-sm text-gray-500">{{ __('Pending') }}</p>
                 </div>
             </div>
 
             {{-- Table --}}
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-xl">
+            <div class="bg-white overflow-hidden shadow-sm border border-gray-100 rounded-sm">
                 <div class="p-6">
                     <table class="w-full text-sm text-left">
                         <thead>
@@ -59,7 +59,7 @@
                                 </td>
                                 <td class="py-3 px-4">
                                     @php $status = $subscriber->getStatusLabel(); @endphp
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-sm text-xs font-medium
                                             @if($status === 'downloaded') bg-green-100 text-green-800
                                             @elseif($status === 'pdf_sent') bg-blue-100 text-blue-800
                                             @elseif($status === 'verified') bg-yellow-100 text-yellow-800
