@@ -58,5 +58,7 @@
         </p>
         <p>&copy; {{ date('Y') }} - {{ config('app.name') }}</p>
     </footer>
+
+    @stack('scripts')
 </body>
 </html>

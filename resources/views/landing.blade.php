@@ -85,6 +85,15 @@
                         @enderror
                     </div>
 
+                    @if (config('services.recaptcha.site_key'))
+                        <div>
+                            <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
+                            @error('g-recaptcha-response')
+                                <p class="mt-2 text-sm text-red-500 italic">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    @endif
+
                     <button
                         type="submit"
                         class="w-full py-4 px-6 btn-gold font-semibold rounded-sm transition duration-300 uppercase tracking-widest text-xs"
@@ -112,4 +121,10 @@
         </div>
     </section>
 @endsection
+
+@if (config('services.recaptcha.site_key'))
+    @push('scripts')
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    @endpush
+@endif
 

@@ -7,7 +7,9 @@ use App\Mail\VerifySubscriberEmail;
 use App\Models\Subscriber;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -33,6 +35,8 @@ class SubscriberController extends Controller
             'email' => ['required', 'email', 'max:255'],
         ]);
 
+        $this->verifyRecaptcha($request);
+
         $existing = Subscriber::where('email', $validated['email'])->first();
 
         if ($existing) {
@@ -55,6 +59,39 @@ class SubscriberController extends Controller
         Mail::to($subscriber->email)->send(new VerifySubscriberEmail($subscriber));
 
         return back()->with('success', __('Please check your email to verify your address and receive the book.'));
+    }
+
+    /**
+     * Validate the Google reCAPTCHA response. Skipped when no secret key is
+     * configured so local development works without credentials.
+     */
+    protected function verifyRecaptcha(Request $request): void
+    {
+        $secret = config('services.recaptcha.secret_key');
+
+        if (!$secret) {
+            return;
+        }
+
+        $token = $request->input('g-recaptcha-response');
+
+        $passed = false;
+
+        if ($token) {
+            $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+                'secret' => $secret,
+                'response' => $token,
+                'remoteip' => $request->ip(),
+            ]);
+
+            $passed = $response->successful() && $response->json('success') === true;
+        }
+
+        if (!$passed) {
+            throw ValidationException::withMessages([
+                'g-recaptcha-response' => __('Please confirm that you are not a robot.'),
+            ]);
+        }
     }
 
     public function verify(string $token): View|RedirectResponse
